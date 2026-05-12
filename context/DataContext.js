@@ -4,14 +4,23 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { loadAppData, saveAppData, originalData } from '@/lib/data';
 
-const DataContext = createContext();
+const DataContext = createContext({
+  appData: originalData,
+  updateAppData: () => {},
+  resetToOriginal: () => {},
+  clearAllData: () => {},
+});
 
 export function DataProvider({ children }) {
-  const [appData, setAppData] , useState(originalData); // initial dummy
+  const [appData, setAppData] = useState(originalData);
 
-  // Load from localStorage on mount
+  // Defer browser data loading until after the first hydration render.
   useEffect(() => {
-    setAppData(loadAppData());
+    const loadSavedData = window.setTimeout(() => {
+      setAppData(loadAppData());
+    }, 0);
+
+    return () => window.clearTimeout(loadSavedData);
   }, []);
 
   // Save to localStorage whenever appData changes
@@ -27,11 +36,13 @@ export function DataProvider({ children }) {
 
   const resetToOriginal = () => {
     setAppData(originalData);
-    localStorage.setItem('rugbyData', JSON.stringify(originalData));
+    saveAppData(originalData);
   };
 
   const clearAllData = () => {
-    localStorage.removeItem('rugbyData');
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('rugbyData');
+    }
     setAppData(originalData);
   };
 

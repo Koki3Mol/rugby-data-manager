@@ -14,6 +14,10 @@ export default function Home() {
   const { appData } = useData();
   const [activeLeagueDiv, setActiveLeagueDiv] = useState(1);
   const [activeFixtureComp, setActiveFixtureComp] = useState('cup');
+  const divisions = appData?.leagueData?.divisions ?? [];
+  const selectedDivisionId = divisions.some(div => div.id === activeLeagueDiv)
+    ? activeLeagueDiv
+    : divisions[0]?.id;
 
   return (
     <>
@@ -40,17 +44,17 @@ export default function Home() {
         <section id="league" className="section">
           <h2 className="section-title">League Competition</h2>
           <div className="division-tabs">
-            {appData.leagueData.divisions.map(div => (
+            {divisions.map(div => (
               <button
                 key={div.id}
-                className={`division-tab ${activeLeagueDiv === div.id ? 'active' : ''}`}
+                className={`division-tab ${selectedDivisionId === div.id ? 'active' : ''}`}
                 onClick={() => setActiveLeagueDiv(div.id)}
               >
                 {div.name}
               </button>
             ))}
           </div>
-          <LeagueStandings divisionId={activeLeagueDiv} />
+          <LeagueStandings divisionId={selectedDivisionId} />
         </section>
 
         {/* Sibanye Super League */}
@@ -60,13 +64,13 @@ export default function Home() {
           </div>
           <div className="cup-division">
             <h3 className="division-super-title"><span className="title-decoration"></span> CUP DIVISION <span className="title-decoration"></span></h3>
-            <PoolCards pools={appData.cupPools} showStars />
-            <PoolStandings pools={appData.cupPools} matches={appData.cupMatches} />
+            <PoolCards pools={appData?.cupPools} showStars />
+            <PoolStandings pools={appData?.cupPools} matches={appData?.cupMatches} />
           </div>
           <div className="shield-division">
             <h3 className="division-super-title"><span className="title-decoration"></span> SHIELD DIVISION <span className="title-decoration"></span></h3>
-            <PoolCards pools={appData.shieldPools} />
-            <PoolStandings pools={appData.shieldPools} matches={appData.shieldMatches} />
+            <PoolCards pools={appData?.shieldPools} />
+            <PoolStandings pools={appData?.shieldPools} matches={appData?.shieldMatches} />
           </div>
         </section>
 
@@ -77,14 +81,14 @@ export default function Home() {
             <button className={`competition-tab ${activeFixtureComp === 'cup' ? 'active' : ''}`} onClick={() => setActiveFixtureComp('cup')}>CUP DIVISION</button>
             <button className={`competition-tab ${activeFixtureComp === 'shield' ? 'active' : ''}`} onClick={() => setActiveFixtureComp('shield')}>SHIELD DIVISION</button>
           </div>
-          {activeFixtureComp === 'cup' && <Fixtures matches={appData.cupMatches} competition="cup" />}
-          {activeFixtureComp === 'shield' && <Fixtures matches={appData.shieldMatches} competition="shield" />}
+          {activeFixtureComp === 'cup' && <Fixtures matches={appData?.cupMatches} competition="cup" />}
+          {activeFixtureComp === 'shield' && <Fixtures matches={appData?.shieldMatches} competition="shield" />}
         </section>
 
         {/* Results */}
         <section id="results" className="section">
           <h2 className="section-title">Recent Results</h2>
-          <Results cupMatches={appData.cupMatches} shieldMatches={appData.shieldMatches} />
+          <Results cupMatches={appData?.cupMatches} shieldMatches={appData?.shieldMatches} />
         </section>
 
         {/* Stats */}

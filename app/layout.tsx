@@ -1,8 +1,13 @@
-// app/layout.js (updated)
+// app/layout.tsx
+import type { ReactNode } from 'react';
 import { DataProvider } from '@/context/DataContext';
-import './styles/globals.css';
+import './globals.css';
 
-export default function RootLayout({ children }) {
+type RootLayoutProps = {
+  children: ReactNode;
+};
+
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
       <body>
