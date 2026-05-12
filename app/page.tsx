@@ -35,6 +35,8 @@ export default function Home() {
             <li><a href="#super-league">Sibanye Super League</a></li>
             <li><a href="#fixtures">Fixtures</a></li>
             <li><a href="#results">Results</a></li>
+            <li className="nav-spacer" aria-hidden="true"></li>
+            <li><a href="/admin" className="nav-admin-link">Admin</a></li>
           </ul>
         </div>
       </nav>
@@ -102,6 +104,7 @@ export default function Home() {
         <div className="container">
           <p>&copy; 2025-2026 Limpopo Rugby Union</p>
           <p className="last-updated">Last updated: {new Date().toLocaleDateString('en-ZA', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+          <p style={{ marginTop: 10, fontSize: '0.85rem' }}><a href="/admin" className="footer-admin-link">Admin</a></p>
         </div>
       </footer>
     </>
